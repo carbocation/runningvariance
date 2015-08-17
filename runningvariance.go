@@ -10,11 +10,11 @@ import (
 )
 
 type RunningStat struct {
-	n    uint
-	newM float64
-	oldM float64
-	newS float64
-	oldS float64
+	N    uint
+	NewM float64
+	OldM float64
+	NewS float64
+	OldS float64
 }
 
 func NewRunningStat() *RunningStat {
@@ -22,34 +22,34 @@ func NewRunningStat() *RunningStat {
 }
 
 func (r *RunningStat) Push(x float64) {
-	r.n++
+	r.N++
 
 	// See Knuth TAOCP vol 2, 3rd edition, page 232
-	if r.n == 1 {
-		r.oldM = x
-		r.newM = x
-		r.oldS = 0.0
+	if r.N == 1 {
+		r.OldM = x
+		r.NewM = x
+		r.OldS = 0.0
 	} else {
-		r.newM = r.oldM + (x-r.oldM)/float64(r.n)
-		r.newS = r.oldS + (x-r.oldM)*(x-r.newM)
+		r.NewM = r.OldM + (x-r.OldM)/float64(r.N)
+		r.NewS = r.OldS + (x-r.OldM)*(x-r.NewM)
 
 		// set up for next iteration
-		r.oldM = r.newM
-		r.oldS = r.newS
+		r.OldM = r.NewM
+		r.OldS = r.NewS
 	}
 }
 
 func (r *RunningStat) NumDataValues() uint {
-	return r.n
+	return r.N
 }
 
 func (r *RunningStat) Mean() float64 {
-	return r.newM
+	return r.NewM
 }
 
 func (r *RunningStat) Variance() float64 {
-	if r.n > 1 {
-		return r.newS / (float64(r.n) - 1)
+	if r.N > 1 {
+		return r.NewS / (float64(r.N) - 1)
 	}
 
 	return 0.0
