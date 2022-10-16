@@ -25,6 +25,6 @@ func main() {
     rv.Push(4)
     rv.Push(5)
 
-    fmt.Sprintf("Mean: %.4f | SD %.4f", rv.Mean(), rv.StandardDeviation())
+    fmt.Printf("Mean: %.4f | SD %.4f", rv.Mean(), rv.StandardDeviation())
 }
 ```
